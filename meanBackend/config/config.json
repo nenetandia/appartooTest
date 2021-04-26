@@ -1,0 +1,10 @@
+{
+    "development" : {
+        "PORT" : 3001,
+        "MONGODB_URL": "mongodb+srv://dbuser:pass@cluster0.v5rzr.mongodb.net/test"
+    },
+    "production":  {
+        "PORT": 80,
+        "MongoDB_URL": "mongodb+srv://dbuser:pass@cluster0.v5rzr.mongodb.net/test"
+    }
+}
