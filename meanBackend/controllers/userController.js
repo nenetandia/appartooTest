@@ -1,9 +1,72 @@
 const mongoose = require('mongoose'); 
-const bcrypt   = require('bcryptjs')
-const User = mongoose.model('User');
+var User = mongoose.model('User');
 const jwt      = require('jsonwebtoken');
-const router = require('../routes/userRouter');
+const passport = require('passport');
 const bodyParser = require('body-parser');
+const _ = require('lodash')
+//require('../config/passportConfig')
+
+
+exports.register = (request ,response, next) => {
+    var user = new User();
+    user.fullName = request.body.fullName;
+    user.age = request.body.age;
+    user.group = request.body.group;
+     user.race = request.body.race;
+    user.food = request.body.food;
+    user.email = request.body.email;
+    user.password = request.body.password;   
+    user.save((err, doc) => {
+         if(!err)
+        response.send(doc);
+        else {
+        response.send(err);
+      }  
+    });
+}
+
+exports.authenticate = (request, response, next) => {
+    
+    passport.authenticate('local', (err, user, info) => {
+       
+
+    // If Passport throws/catches an error
+    if (err) {
+      return response.status(400).json(err);
+    }
+    // If a user is found
+    else if(user){
+      console.log('here my user ---- ', user)
+      return response.status(200).json({"token": user.generateJwt() });
+     
+    } else {
+      // If user is not found
+      response.status(404).json(info);
+    }
+  })(request, response);
+
+};
+module.exports.userProfile = (request, response, next) => {
+  User.findOne({ _id: request._id }, 
+    (err, user) => {
+      if (!user)
+        return response.status(404).json({ status: false, message: 'User record not found'});
+      else 
+      return response.status(200).json({status: true, user: _.pick(user, ['fullName', 'email']) });
+    })
+}
+
+
+
+
+
+
+// console.log('here authenticate', user)
+//         console.error(err)
+//         if(err) return response.status(400).json(err);
+//         else if (user) return response.status(200).json({ "token": user.generateJwt() });
+//         else return response.status(404).json(info);
+//     })(request, response);
 
 // var objectId = require('mongoose').Types.ObjectId;
 
@@ -50,18 +113,6 @@ const bodyParser = require('body-parser');
 // }
 
 
-exports.register = (request ,response, next) => {
-    var user = new User();
-    user.fullName = request.body.fullName;
-    user.email = request.body.email;
-    user.password = request.body.password;
-    user.save((err, doc) => {
-         if(!err)
-        response.send(doc);
-        else 
-        response.send(err);  
-    });
-}
 
 
 // exports.login = (request, response, next) => {
@@ -86,30 +137,3 @@ exports.register = (request ,response, next) => {
 //         }
 //     })
 // }
-
-// exports.register = async (request, response, next) => {
-
-//     let hashedPass = await bcrypt.hash(request.body.password, 8);
-//     console.log(hashedPass);    
-
-//     let user = new User({ 
-//         Name : request.body.Name,
-//         email : request.body.email,
-//         password : hashedPass
-//     })
-//     user.save()
-//     .then(user => {
-//         response.json({message: 'Vous avez bien été ajouté'})
-//     })
-//     .catch(error => {
-//         response.json({message: 'An erroor occured'})
-//     })
-// }
-
-// else {
-//     console.log('jkklll', err)
-//         if (err.code = 11000)
-//             response.status(422).send(['duplicate email address found']);
-//         else
-//             return next(err) ;
-//     } 

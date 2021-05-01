@@ -1,17 +1,21 @@
 const express    = require('express');
 const path       = require('path');
-const app        = express()
-const bodyParser = require('body-parser')
-const cors       = require('cors')
+const app        = express();
+const bodyParser = require('body-parser');
+const cors       = require('cors');
+const passport = require('passport');
 
 require('./config/config')
 require('./config/connection/dbconnect')
+require('./config/passportConfig')
 
-app.use(bodyParser.json());
+// ------- middleware
+app.use(bodyParser.json()); 
 app.use(cors());
-
-// --------routes -------------
+app.use(passport.initialize());
 app.use('/api', require('./routes/userRouter'));
+
+
 
 // ERRORS in securisation
 app.use((err, request, response, next) => {

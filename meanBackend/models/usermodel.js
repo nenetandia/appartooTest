@@ -1,18 +1,35 @@
 const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-
+// -------- MongoDB data schema
 var userShema = new mongoose.Schema({
     fullName:{
         type    : String, 
         required: 'fullName is required'
+    },
+    age:{
+        type    : String, 
+        required: 'age is required'
+    },
+    group:{
+        type    : String, 
+        required: 'group is required'
+    },
+    race:{
+        type    : String, 
+        required: 'race is required'
+    },
+   food:{
+        type    : String, 
+        required: 'food is required'
     },
     
     email: {
         type     : String,
         required : 'Email address is required',
         lowercase: true,
-        validate : {
+        validate: {
             isAsync: true,
             validator: function(value, isValid) {
                 const self = this;
@@ -34,8 +51,8 @@ var userShema = new mongoose.Schema({
                 })
             },
             message:  'The email address is already taken!'
-        },
-
+        }
+        
     },
     password: {
         type     : String,
@@ -44,12 +61,13 @@ var userShema = new mongoose.Schema({
     },
     saltSecret: String
 });
-// ----------- securing -----------------
+// ----------- validation email -----------------
 userShema.path('email').validate((val) => {
     emailRegex =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     return emailRegex.test(val);
 }, 'invalid email.');
 
+// -------- pre save
 userShema.pre('save', function (next) {
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(this.password, salt, (err, hash) => {
@@ -59,5 +77,23 @@ userShema.pre('save', function (next) {
         });
     });
 });
+// --------checking the password
+userShema.methods.verifyPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+}
+//  -------- generating the JWT
+userShema.methods.generateJwt = function () {
+    console.log('toto');
+    return jwt.sign({ _id: this._id }, 
+         process.env.JWT_SECRET, 
+         {
+            expiresIn: process.env.JWT_EXP
+         });
+};
 
 mongoose.model('User', userShema);
+ 
+// validate: {
+//     validator: () => Promise.resolve(false),
+//     message: 'This email already exists. Please try to log in instead.'
+//   }
