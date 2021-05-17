@@ -54,6 +54,10 @@ var userShema = new mongoose.Schema({
         }
         
     },
+    friend  :{
+        type: Boolean,
+        default : "false"
+    },
     password: {
         type     : String,
         required : 'password is required',
@@ -93,7 +97,3 @@ userShema.methods.generateJwt = function () {
 
 mongoose.model('User', userShema);
  
-// validate: {
-//     validator: () => Promise.resolve(false),
-//     message: 'This email already exists. Please try to log in instead.'
-//   }

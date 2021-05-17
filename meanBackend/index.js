@@ -15,8 +15,6 @@ app.use(cors());
 app.use(passport.initialize());
 app.use('/api', require('./routes/userRouter'));
 
-
-
 // ERRORS in securisation
 app.use((err, request, response, next) => {
     if(err.name = 'validationError') {

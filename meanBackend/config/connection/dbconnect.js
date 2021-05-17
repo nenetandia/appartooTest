@@ -11,3 +11,6 @@ mongoose.connect("mongodb+srv://dbuser:pass@cluster0.v5rzr.mongodb.net/test", {
     }
 });
 require('../../models/usermodel')
+
+// mongodb+srv://dbuser:pass@cluster0.v5rzr.mongodb.net/test
+// mongodb+srv://dbUser:pass@cluster0.zz0hq.mongodb.net/test
