@@ -18,9 +18,4 @@ router.delete('/:id', ctrUser.delete )                                      // d
 router.post('/myFriends', ctrUser.friendship)                              // add user as friend
 router.put("/:id/status", ctrUser.updateFriendship)                   //find and change the value of friend
 
-
-
-
-
-
 module.exports = router;
