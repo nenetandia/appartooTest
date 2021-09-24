@@ -1,0 +1,41 @@
+<!-- <p>sign-in works!</p> -->
+
+<form #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)" class="adjust">
+    <div class="card text-center border-light mb-3" style="width: 20rem;">
+      <div class="card-header">
+        SIGN IN
+      </div>
+       <div>
+            <img src="../../../assets/img/welcome_tut_panel_01.png" alt="user Icon" id="top_icon">
+       </div>
+      <ul class="list-group list-group-flush">        
+        <li class="list-group-item">
+          <input type="text" name="email"  #email="ngModel" [(ngModel)]="model.email"  placeholder="me@gmail.com" [pattern] ="emailRegex" required [ngClass]="{'invalid-textbox' : signInForm.submitted && !email.valid }"> 
+          <div *ngIf="signInForm.submitted && email.errors?.pattern">
+            <label  class="validation-message" >Invalid email address.</label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <input type="password" name="password"  #password="ngModel" [(ngModel)]="model.password"  placeholder="password" minlength="6" [ngClass]="{'invalid-textbox' : signInForm.submitted && !password.valid}" >
+          <div *ngIf="signInForm.submitted && password.errors?.minlength ">
+            <label  class="validation-message" >Minimum of 6 characters</label>
+          </div>
+      </ul>
+      <div>
+         <input type="submit" class="btn btn-primary submitButton" value="Sign In" routerLink="/login">
+    </div>
+    <div>
+      <p>You are not registered yet?</p>
+      <input type="submit" class="btn btn-secondary submitButton" value="sign Up" routerLink="/signup"  >
+    </div>
+</div>
+  </form>
+  <!-- error message -->
+  <div class="alert" *ngIf="frontErrMessage">
+ {{frontErrMessage}}
+  </div>
+
+
+
+  <!-- <a href="/signup" routerLink="/signup">click here to register</a> -->
+

@@ -1,0 +1,18 @@
+
+.top {
+    color: rgb(66, 49, 141);
+}
+#navbarSearch input {
+    width: 500px;
+    height: 40px;
+}
+
+#navbarSearch button {
+    width: 70px;
+    height: 40px;
+
+}
+#Schtroumpf {
+    width: 20px;
+    height: 24px;
+}

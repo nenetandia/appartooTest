@@ -1,0 +1,152 @@
+<div class="alert alert-success" role="alert" *ngIf="message">
+  deleted successfully    
+</div> 
+   
+  <nav class="navbar navbar-expand-lg navbar-light bg-light " style="background-color: #e3f2fd;"  *ngIf = "userDetails">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="p-2 flex-grow-1 bd-highlight">
+            <p>WELCOME {{ userDetails.fullName }}</p>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarSearch" >
+          <form >
+            <input  type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+          </form>
+        </div> 
+       
+        <div class="d-flex">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                  <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Profile
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Email: {{ userDetails.email }}</a></li>
+                        <li><a class="dropdown-item" href="#">Name: {{ userDetails.fullName.split(' ')[0]}}</a></li>
+                        <li><a class="dropdown-item" href="#">Surname: {{ userDetails.fullName.split(' ')[1]}}</a></li>
+
+                        <li><a class="dropdown-item" href="#">Age: {{ userDetails.age}}</a></li>
+                        <li><a class="dropdown-item" href="#">Group : {{ userDetails.group }}</a></li>
+                        <li><a class="dropdown-item" href="#">Race: {{ userDetails.race }}</a></li>
+                        <li><a class="dropdown-item" href="#">Food: {{ userDetails.food }}</a></li>
+                        <li><a class="dropdown-item"  href="#">
+                          <input type="submit" value="edit" class="action-btn" >
+                        </a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item dropdown" *ngIf = " listFriends">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Friends
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink"  >
+                        <li><a class="dropdown-item" href="#">{{listFriends.fullName}}</a></li>
+                        
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+                <input type="button" (click)= "onLogout()" value="logout">
+        </div>
+      </div>
+    </div>
+  </nav> 
+
+<!-- //Bodycontent -->
+
+ <div class="wrapper fadeInDown" id="listOfAllUsers" >
+  <div class="card mb-3" style="max-width: 1000px;"  *ngFor="let user of userService.users" id="listOfAllUsers">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="../../assets/img/welcome_tut_panel_01.png" class="card-img-top" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.fullName }}</h5>
+          <p class="card-text">if you like my profile, don't hesitate to add me.</p>
+
+          <p class="card-text">{{ user.group }}</p>
+          <p class="card-text">{{ user.race }}</p>
+          <p class="card-text">{{ user.food }}</p>
+          <p class="card-text"><small class="text-muted">{{ user.age }}</small></p>
+            <a class="action-btn" class="action-btn" >
+              <i class="material-icons"> person_add_alt_1</i> 
+            </a>            
+              <a type="button"  class="action-btn" (click)="onDelete(user._id)">
+                <i class="material-icons">delete</i>
+              </a>
+        </div>
+      </div>
+    </div>
+  </div> 
+    
+</div> 
+
+
+<!-- (click)="getFriend(user._id)" -->
+<!-- style="width: 18rem;" -->
+
+<!-- <div class="card-rows  col-2"  *ngFor="let user of userService.users" id="listOfAllUsers"> -->
+
+
+<!-- <div class="card text-center"  *ngFor="let user of userService.users" id="listOfAllUsers">
+  <img src="../../assets/img/welcome_tut_panel_01.png" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ user.fullName }}</h5>
+    <p class="card-text">if you are looking for a "schtroumpfs " add me.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{{ user.group }}</li>
+    <li class="list-group-item">{{ user.race }}</li>
+    <li class="list-group-item">{{ user.food }}</li>
+    <p class="card-text"><small class="text-muted">{{ user.age }}</small></p>
+
+
+  </ul>
+  <div class="card-body">
+    <a class="action-btn"><i class="material-icons" > person_add_alt_1</i> 
+    </a>
+    <a  class="action-btn"><i class="material-icons">delete</i>
+    </a>
+  </div>
+</div> -->
+
+
+<!-- <div class="container px-4">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+      <div class="card text-center"  *ngFor="let user of userService.users" id="listOfAllUsers">
+        <img src="../../assets/img/welcome_tut_panel_01.png" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.fullName }}</h5>
+          <p class="card-text">if you are looking for a "schtroumpfs " add me.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{ user.group }}</li>
+          <li class="list-group-item">{{ user.race }}</li>
+          <li class="list-group-item">{{ user.food }}</li>
+          <p class="card-text"><small class="text-muted">{{ user.age }}</small></p>
+      
+      
+        </ul>
+        <div class="card-body">
+          <a class="action-btn"><i class="material-icons" > person_add_alt_1</i> 
+          </a>
+          <a  class="action-btn"><i class="material-icons">delete</i>
+          </a>
+        </div>
+      </div>
+     </div>
+    </div>
+    
+</div> -->
